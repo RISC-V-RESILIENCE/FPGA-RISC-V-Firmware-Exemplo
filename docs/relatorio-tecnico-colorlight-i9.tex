@@ -1,0 +1,182 @@
+\documentclass[10pt,twocolumn,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\geometry{margin=1.6cm}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+
+\title{Relat\'orio T\'ecnico de Experimentos com VexRiscv e LiteX em M\'odulo Colorlight i9 Baseado em FPGA Lattice ECP5}
+
+\author{Carlos Delfino Carvalho Pinheiro\\
+\small consultoria@carlosdelfino.eti.br \\
+\small carlos.pinheiro1@faculdadegran.edu.br \\
+\small Laborat\'orio de Desenvolvimento de Software -- LDS / iRede / IFCE\\
+\small Pesquisa conduzida com orienta\c{c}\~ao do Prof. Ot\'avio (IFCE/iRede)\\
+\small e acompanhamento do mestrando Jos\'e Ronaldo (IFCE/iRede)}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Este relat\'orio t\'ecnico apresenta os experimentos realizados com o soft-core \textit{RISC-V} VexRiscv integrado ao framework LiteX em um \textit{System-on-Chip} sintetizado para o m\'odulo Colorlight i9, baseado em FPGA Lattice ECP5 LFE5U-45F. O trabalho concentrou-se na constru\c{c}\~ao de um fluxo reprodut\'ivel de gera\c{c}\~ao de \textit{gateware}, compila\c{c}\~ao de firmware e programa\c{c}\~ao da FPGA a partir de uma imagem Docker dedicada, bem como na parametriza\c{c}\~ao da frequ\^encia de opera\c{c}\~ao do SoC por linha de comando. Foram conduzidos testes em m\'ultiplas frequ\^encias, incluindo 25, 50, 65, 80 e 100 MHz, com uso de PLL interno da fam\'ilia ECP5 para valores distintos do clock nativo de 25 MHz. Os resultados indicam que a melhor frequ\^encia validada como est\'avel para o n\'ucleo adotado, no fluxo efetivamente testado na placa Colorlight i9, foi 65 MHz. O relat\'orio tamb\'em discute as limita\c{c}\~oes observadas na grava\c{c}\~ao persistente da mem\'oria flash da placa e os ajustes de firmware e metadados de build implementados ao longo dos experimentos.
+\end{abstract}
+
+\section{Introdu\c{c}\~ao}
+A prototipa\c{c}\~ao de SoCs baseados em arquiteturas abertas, como \textit{RISC-V}, em dispositivos FPGA, oferece um ambiente particularmente rico para investiga\c{c}\~ao de arquiteturas, valida\c{c}\~ao de ferramentas de s\'intese e experimenta\c{c}\~ao de par\^ametros microarquiteturais. Neste contexto, o presente trabalho descreve a constru\c{c}\~ao e evolu\c{c}\~ao de um SoC simples com CPU VexRiscv e infraestrutura LiteX, direcionado ao m\'odulo Colorlight i9, o qual utiliza um FPGA Lattice ECP5 LFE5U-45F em encapsulamento CABGA381.
+
+O estudo foi motivado pela necessidade de estabelecer um fluxo de desenvolvimento reproduz\'ivel, parametriz\'avel e adequadamente documentado, capaz de cobrir desde a gera\c{c}\~ao do \textit{gateware} at\'e a grava\c{c}\~ao do bitstream e a execu\c{c}\~ao de firmware de valida\c{c}\~ao pela interface serial. Ao longo dos experimentos, foram incorporadas extens\~oes importantes, tais como o uso de PLL interno para frequ\^encias arbitr\'arias, a exporta\c{c}\~ao de metadados de build via registradores CSR, a inclus\~ao de um firmware embarcado na ROM e a adapta\c{c}\~ao do fluxo para a placa i9.
+
+\section{Plataforma Experimental}
+A plataforma de hardware utilizada foi o m\'odulo \textbf{Colorlight i9 v7.2}, baseado no FPGA \textbf{Lattice ECP5 LFE5U-45F-6BG381C}. Trata-se de um dispositivo FPGA de m\'edia capacidade, amplamente explorado em projetos de prototipa\c{c}\~ao por dispor de boa rela\c{c}\~ao entre recursos l\'ogicos, mem\'orias embutidas e suporte por ferramentas livres, especialmente Yosys, nextpnr-ecp5 e Project Trellis.
+
+No fluxo desenvolvido, foram utilizados como recursos principais da placa:
+\begin{itemize}[leftmargin=*]
+    \item clock de entrada de 25 MHz;
+    \item interface serial UART em 115200 bps;
+    \item bot\~ao de reset;
+    \item LED de usu\'ario onboard;
+    \item interface DAPLink CMSIS-DAP para programa\c{c}\~ao JTAG.
+\end{itemize}
+
+Do ponto de vista l\'ogico, o SoC foi composto por:
+\begin{itemize}[leftmargin=*]
+    \item CPU VexRiscv, variante \textit{standard}, arquitetura RV32IM;
+    \item ROM integrada de 32 KiB;
+    \item SRAM integrada de 8 KiB;
+    \item UART LiteX;
+    \item temporizador LiteX;
+    \item GPIO para LED;
+    \item bloco adicional \texttt{build\_info} mapeado em CSR.
+\end{itemize}
+
+\section{Ambiente de Desenvolvimento com Docker}
+Um dos eixos centrais do trabalho foi a consolida\c{c}\~ao de uma imagem Docker dedicada, disponibilizada como \texttt{carlosdelfino/colorlight-risc-v}. O objetivo desta imagem foi eliminar a variabilidade ambiental entre m\'aquinas e permitir que o fluxo de desenvolvimento pudesse ser reproduzido externamente por outros pesquisadores, estudantes e colaboradores do LDS/iRede.
+
+A imagem passou a incorporar, em um \~unico ambiente:
+\begin{itemize}[leftmargin=*]
+    \item Yosys para s\'intese l\'ogica;
+    \item nextpnr-ecp5 para posicionamento e roteamento;
+    \item ecppack para gera\c{c}\~ao do bitstream;
+    \item LiteX e Migen para descri\c{c}\~ao e constru\c{c}\~ao do SoC;
+    \item pythondata-cpu-vexriscv;
+    \item pythondata-software-picolibc;
+    \item compilador cruzado \textit{riscv64-linux-gnu-gcc};
+    \item OpenOCD e openFPGALoader para programa\c{c}\~ao.
+\end{itemize}
+
+A ado\c{c}\~ao do cont\^einer teve impacto pr\'atico direto na pesquisa, pois tornou trivial a execu\c{c}\~ao de builds, recompila\c{c}\~oes, testes sucessivos de frequ\^encia e programa\c{c}\~ao da FPGA a partir de um conjunto fixo de ferramentas. Isso tamb\'em permitiu distribuir o ambiente para uso externo sem exigir instala\c{c}\~oes manuais complexas no sistema hospedeiro.
+
+\section{Arquitetura do SoC}
+O projeto foi estruturado em torno do LiteX \texttt{SoCCore}, com um gerador de clock e reset (CRG) configurado para operar em dois modos:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{modo direto}, quando o clock do sistema permanece em 25 MHz;
+    \item \textbf{modo PLL}, quando a frequ\^encia solicitada difere de 25 MHz.
+\end{enumerate}
+
+Nos casos em que \texttt{--sys-clk-freq} \`e diferente de 25 MHz, o projeto utiliza o \texttt{ECP5PLL} do LiteX para sintetizar um novo clock interno. Um aspecto relevante desta implementa\c{c}\~ao \`e que o valor de frequ\^encia n\~ao precisa ser m\'ultiplo exato de 25 MHz. Em outras palavras, o uso do PLL do ECP5 permite explorar frequ\^encias arbitr\'arias compat\'iveis com os limites de s\'intese e temporiza\c{c}\~ao do dispositivo, como 50 MHz, 65 MHz, 75 MHz, 80 MHz ou 100 MHz, desde que o \textit{place-and-route} consiga fechar as restri\c{c}\~oes temporais.
+
+Essa flexibiliza\c{c}\~ao foi particularmente importante no presente trabalho, pois permitiu a identifica\c{c}\~ao emp\'irica do melhor ponto de opera\c{c}\~ao para o n\'ucleo implementado.
+
+\section{Firmware de Teste e Instrumenta\c{c}\~ao}
+O firmware utilizado ao longo dos experimentos foi mantido intencionalmente simples, de modo a servir como base de valida\c{c}\~ao funcional do SoC. Entre suas fun\c{c}\~oes principais destacam-se:
+\begin{itemize}[leftmargin=*]
+    \item exibi\c{c}\~ao de banner pela UART;
+    \item prompt interativo via serial;
+    \item leitura de comandos como \texttt{info}, \texttt{banner}, \texttt{led}, \texttt{help} e \texttt{reboot};
+    \item espera por atividade na UART antes de exibir o banner, com libera\c{c}\~ao por tecla \textit{Enter} caso n\~ao haja identifica\c{c}\~ao autom\'atica da conex\~ao serial;
+    \item leitura de metadados de build via CSRs.
+\end{itemize}
+
+Como extens\~ao relevante, foi criado o bloco CSR \texttt{build\_info}, contendo:
+\begin{itemize}[leftmargin=*]
+    \item frequ\^encia configurada do SoC;
+    \item timestamp Unix da compila\c{c}\~ao;
+    \item indica\c{c}\~ao do modo de clock (\texttt{DIR} ou \texttt{PLL});
+    \item siglas \texttt{LDS}, \texttt{IRede} e \texttt{IFCE};
+    \item data textual da compila\c{c}\~ao.
+\end{itemize}
+
+Esses dados passaram a ser exportados pelo hardware e lidos pelo firmware, o que melhora a rastreabilidade experimental e reduz ambiguidades durante testes com bitstreams gerados em frequ\^encias distintas.
+
+\section{Metodologia Experimental}
+Os experimentos foram conduzidos iterativamente no cont\^einer Docker, com gera\c{c}\~ao de bitstreams e valida\c{c}\~ao do relat\'orio de temporiza\c{c}\~ao do \textit{place-and-route}. Al\'em da an\'alise est\'atica de temporiza\c{c}\~ao, os bitstreams tamb\'em foram gravados na placa para observa\c{c}\~ao funcional do comportamento do firmware e da interface serial.
+
+O procedimento geral adotado foi:
+\begin{enumerate}[leftmargin=*]
+    \item gerar o SoC com uma frequ\^encia desejada via \texttt{SYS\_CLK\_FREQ};
+    \item sintetizar e rotear o projeto;
+    \item observar a frequ\^encia m\'axima estimada pelo relat\'orio de timing;
+    \item compilar o firmware com os headers correspondentes \`aquela configura\c{c}\~ao;
+    \item embutir o firmware na ROM e regravar o \textit{gateware};
+    \item programar a FPGA e avaliar o comportamento pela UART.
+\end{enumerate}
+
+\section{Experimentos Realizados}
+A Tabela~\ref{tab:freq} sintetiza os principais resultados observados durante os testes.
+
+\begin{table}[h]
+\centering
+\caption{Resumo dos experimentos por frequ\^encia.}
+\label{tab:freq}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.2cm} >{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}p{2.5cm}}
+\toprule
+Freq. & Resultado de timing & Observa\c{c}\~ao principal \\
+\midrule
+25 MHz & V\'alido & clock direto, sem PLL \\
+50 MHz & PASS & PLL funcional e opera\c{c}\~ao bem sucedida \\
+65 MHz & PASS & melhor ponto validado como est\'avel \\
+80 MHz & FAIL & relat\'orio indicou aproximadamente 79{,}66 MHz \\
+100 MHz & FAIL & sintetiza e grava, mas n\~ao fecha timing \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os resultados mostram claramente que a eleva\c{c}\~ao da frequ\^encia al\'em de 65 MHz aproxima o projeto do limite de temporiza\c{c}\~ao para a composi\c{c}\~ao atual de CPU, perif\'ericos e firmware integrado. Embora bitstreams em 80 MHz e 100 MHz tenham sido gerados e, em alguns casos, gravados na FPGA, tais configura\c{c}\~oes n\~ao apresentaram margem temporal suficiente para serem consideradas est\'aveis no escopo deste estudo.
+
+\section{Ajustes Realizados ao Longo do Desenvolvimento}
+Diversos ajustes foram necess\'arios para que o projeto alcan\c{c}asse um estado funcional e experimentalmente \~util:
+\begin{itemize}[leftmargin=*]
+    \item adapta\c{c}\~ao do CRG para uso do \texttt{ECP5PLL};
+    \item cria\c{c}\~ao de parser para frequ\^encias arbitr\'arias via linha de comando;
+    \item compatibiliza\c{c}\~ao do fluxo de build para propagar a frequ\^encia correta ao firmware;
+    \item corre\c{c}\~ao do fluxo de \texttt{embed}, evitando uso de headers desatualizados;
+    \item inclus\~ao de metadados de build no hardware e no firmware;
+    \item ajuste do firmware para aguardar ativa\c{c}\~ao da serial antes da exibi\c{c}\~ao do banner;
+    \item adapta\c{c}\~ao para a placa Colorlight i9, ap\'os identifica\c{c}\~ao do IDCODE correto do ECP5 LFE5U-45F;
+    \item tentativa de grava\c{c}\~ao persistente em flash SPI com \texttt{openFPGALoader}, a qual n\~ao se mostrou confi\'avel no m\'odulo i9 testado.
+\end{itemize}
+
+\section{Programa\c{c}\~ao da FPGA: SRAM versus Flash}
+Os testes mostraram que a grava\c{c}\~ao vol\'atil pela cadeia OpenOCD + JTAG + SVF funciona adequadamente no contexto da Colorlight i9. Entretanto, esse modo programa a SRAM de configura\c{c}\~ao da FPGA e, portanto, o estado \`e perdido ap\'os desligamento.
+
+Tamb\'em foi investigada a grava\c{c}\~ao persistente na mem\'oria flash SPI da placa por meio do \texttt{openFPGALoader}. Embora a ferramenta tenha detectado corretamente a mem\'oria Winbond W25Q64 e efetuado opera\c{c}\~oes de apagamento e escrita, a fase de verifica\c{c}\~ao falhou. Em consequ\^encia, a programa\c{c}\~ao persistente n\~ao p\^ode ser considerada confi\'avel para a plataforma i9 empregada neste trabalho.
+
+\section{Discuss\~ao}
+Os experimentos refor\c{c}am a viabilidade do uso combinado de LiteX e VexRiscv em FPGAs Lattice ECP5 para fins de pesquisa e ensino. O projeto alcan\c{c}ou um n\'ivel de maturidade suficiente para permitir execu\c{c}\~oes repet\'iveis, depura\c{c}\~ao de firmware via UART e explora\c{c}\~ao de frequ\^encias de opera\c{c}\~ao sem a necessidade de altera\c{c}\~oes profundas na base de c\'odigo.
+
+A disponibilidade de um cont\^einer Docker funcional contribui de forma decisiva para a dissemina\c{c}\~ao do fluxo, reduzindo o custo de entrada para novos experimentos. Do ponto de vista metodol\'ogico, a parametriza\c{c}\~ao do PLL por linha de comando representa um ganho expressivo, pois evita a rigidez de se trabalhar apenas com m\'ultiplos do clock de entrada de 25 MHz.
+
+Por outro lado, os resultados tamb\'em evidenciam que a frequ\^encia de opera\c{c}\~ao n\~ao deve ser escolhida apenas pela capacidade do PLL de sintetizar determinado valor nominal, mas sim pela efetiva capacidade do projeto de satisfazer as restri\c{c}\~oes temporais ap\'os s\'intese e roteamento.
+
+\section{Conclus\~ao}
+O trabalho demonstrou a implementa\c{c}\~ao bem sucedida de um SoC RISC-V baseado em VexRiscv e LiteX sobre a plataforma Colorlight i9 com FPGA Lattice ECP5, incluindo firmware embarcado, metadados de build acess\'iveis por CSR, fluxo de compila\c{c}\~ao via Docker e programa\c{c}\~ao da FPGA via JTAG.
+
+Foi mostrado que o uso do PLL interno do ECP5 permite configurar frequ\^encias diversas e arbitr\'arias, n\~ao restritas a m\'ultiplos de 25 MHz. Ainda assim, a estabilidade do sistema depende do fechamento temporal do projeto. Entre as frequ\^encias testadas, a melhor frequ\^encia validada como est\'avel para o n\'ucleo utilizado foi \textbf{65 MHz}. Esse resultado representa, no contexto da presente pesquisa, o melhor compromisso entre desempenho, robustez do fluxo e previsibilidade experimental.
+
+Como desdobramentos futuros, destacam-se: investiga\c{c}\~ao de grava\c{c}\~ao persistente confi\'avel para a i9, amplia\c{c}\~ao do firmware de diagn\'ostico, medi\c{c}\~ao experimental de desempenho e consumo, e integra\c{c}\~ao de perif\'ericos adicionais para estudos de arquiteturas embarcadas mais complexas.
+
+\section*{Agradecimentos}
+O autor agradece ao Laborat\'orio de Desenvolvimento de Software (LDS), ao iRede e ao IFCE pelo ambiente de pesquisa e experimenta\c{c}\~ao, bem como ao Prof. Ot\'avio e ao mestrando Jos\'e Ronaldo pelo acompanhamento e pelas discuss\~oes t\'ecnicas que orientaram o desenvolvimento dos experimentos relatados.
+
+\end{document}

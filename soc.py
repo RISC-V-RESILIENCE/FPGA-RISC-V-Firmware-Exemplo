@@ -26,13 +26,16 @@ Uso:
 import os
 import sys
 import argparse
+from datetime import datetime
 
-from migen import Signal, ClockDomain, Module, Instance, Cat
+from migen import Signal, ClockDomain
 from litex.gen import LiteXModule
 from litex.soc.integration.soc_core import SoCCore
 from litex.soc.integration.builder import Builder
 from litex.soc.integration.common import get_mem_data
+from litex.soc.cores.clock import ECP5PLL
 from litex.soc.cores.led import LedChaser
+from litex.soc.interconnect.csr import AutoCSR, CSRStatus
 from litex.build.lattice import LatticePlatform
 from litex.build.generic_platform import Pins, Subsignal, IOStandard, Misc
 
@@ -81,6 +84,79 @@ BOARD_CONFIG = {
     },
 }
 
+OPENFPGALOADER_BOARD = {
+    "i5": "colorlight-i5",
+    "i9": "colorlight-i9",
+}
+
+CLOCK_PRESETS = {
+    "25": 25e6,
+    "25mhz": 25e6,
+    "50": 50e6,
+    "50mhz": 50e6,
+    "100": 100e6,
+    "100mhz": 100e6,
+}
+
+def parse_sys_clk_freq(value):
+    text = str(value).strip().lower().replace("_", "")
+    if text in CLOCK_PRESETS:
+        return float(CLOCK_PRESETS[text])
+    multiplier = 1.0
+    if text.endswith("mhz"):
+        multiplier = 1e6
+        text = text[:-3]
+    elif text.endswith("khz"):
+        multiplier = 1e3
+        text = text[:-3]
+    elif text.endswith("hz"):
+        text = text[:-2]
+    freq = float(text) * multiplier
+    if multiplier == 1.0 and freq < 1e5:
+        freq *= 1e6
+    if freq <= 0:
+        raise argparse.ArgumentTypeError("A frequência deve ser maior que zero.")
+    return float(freq)
+
+def format_sys_clk_freq(freq):
+    freq = float(freq)
+    if freq >= 1e6:
+        return f"{freq / 1e6:g} MHz"
+    if freq >= 1e3:
+        return f"{freq / 1e3:g} kHz"
+    return f"{freq:g} Hz"
+
+def pack_text_words(text, min_words=1):
+    data = text.encode("ascii", errors="ignore") + b"\0"
+    if len(data) % 4:
+        data += b"\0" * (4 - (len(data) % 4))
+    words = [int.from_bytes(data[i:i + 4], byteorder="little") for i in range(0, len(data), 4)]
+    while len(words) < min_words:
+        words.append(0)
+    return words
+
+class BuildInfo(LiteXModule, AutoCSR):
+    def __init__(self, sys_clk_freq):
+        build_dt = datetime.now()
+        build_text = build_dt.strftime("%Y-%m-%d %H:%M:%S")
+        mode_text = "PLL" if int(float(sys_clk_freq)) != int(25e6) else "DIR"
+        org_words = pack_text_words("LDS|IRede|IFCE", min_words=4)
+        date_words = pack_text_words(build_text, min_words=5)
+
+        self.clock_hz = CSRStatus(32, reset=int(sys_clk_freq), name="clock_hz")
+        self.build_unix = CSRStatus(32, reset=int(build_dt.timestamp()), name="build_unix")
+        self.mode = CSRStatus(32, reset=pack_text_words(mode_text, min_words=1)[0], name="mode")
+        self.org0 = CSRStatus(32, reset=org_words[0], name="org0")
+        self.org1 = CSRStatus(32, reset=org_words[1], name="org1")
+        self.org2 = CSRStatus(32, reset=org_words[2], name="org2")
+        self.org3 = CSRStatus(32, reset=org_words[3], name="org3")
+        self.date_len = CSRStatus(32, reset=len(build_text), name="date_len")
+        self.date0 = CSRStatus(32, reset=date_words[0], name="date0")
+        self.date1 = CSRStatus(32, reset=date_words[1], name="date1")
+        self.date2 = CSRStatus(32, reset=date_words[2], name="date2")
+        self.date3 = CSRStatus(32, reset=date_words[3], name="date3")
+        self.date4 = CSRStatus(32, reset=date_words[4], name="date4")
+
 # =============================================================================
 # CRG — Clock Reset Generator (25 MHz direto, sem PLL)
 # =============================================================================
@@ -90,9 +166,20 @@ class _CRG(LiteXModule):
         self.cd_sys = ClockDomain("sys")
 
         clk25 = platform.request("clk25")
-        self.comb += self.cd_sys.clk.eq(clk25)
-        self.comb += self.cd_sys.rst.eq(self.rst)
-        platform.add_period_constraint(clk25, 1e9 / sys_clk_freq)
+        rst_n = platform.request("cpu_reset_n")
+        use_pll = int(float(sys_clk_freq)) != int(25e6)
+
+        platform.add_period_constraint(clk25, 1e9 / 25e6)
+
+        if use_pll:
+            self.pll = ECP5PLL()
+            self.comb += self.pll.reset.eq((~rst_n) | self.rst)
+            self.pll.register_clkin(clk25, 25e6)
+            self.pll.create_clkout(self.cd_sys, sys_clk_freq)
+            platform.add_period_constraint(self.cd_sys.clk, 1e9 / sys_clk_freq)
+        else:
+            self.comb += self.cd_sys.clk.eq(clk25)
+            self.comb += self.cd_sys.rst.eq((~rst_n) | self.rst)
 
 # =============================================================================
 # SoC ColorLight i5/i9
@@ -118,6 +205,9 @@ class ColorLightSoC(SoCCore):
             sys_clk_freq = sys_clk_freq,
         )
 
+        self.build_info = BuildInfo(sys_clk_freq)
+        self.add_csr("build_info")
+
 # =============================================================================
 # Main
 # =============================================================================
@@ -130,11 +220,14 @@ def main():
     parser.add_argument("--firmware",  default=None,        help="Firmware .bin para embutir na ROM (substitui BIOS)")
     parser.add_argument("--flash",    action="store_true", help="Gravar bitstream na FPGA")
     parser.add_argument("--output-dir", default="build",   help="Diretório de saída (default: build)")
+    parser.add_argument("--sys-clk-freq", type=parse_sys_clk_freq, default=25e6, help="Frequência do clock do sistema (padrão: 25 MHz)")
     args = parser.parse_args()
 
     # Plataforma
     cfg = BOARD_CONFIG[args.board]
     print(f"Placa: {cfg['desc']}")
+    print(f"Clock do sistema: {format_sys_clk_freq(args.sys_clk_freq)}")
+    print(f"Modo de clock: {'PLL ECP5' if int(float(args.sys_clk_freq)) != int(25e6) else 'Direto 25 MHz'}")
     platform = LatticePlatform(cfg["device"], cfg["io"], toolchain="trellis")
 
     # Firmware customizado: carregar binario e injetar na ROM
@@ -152,7 +245,7 @@ def main():
     kwargs = {}
     if rom_init:
         kwargs["integrated_rom_init"] = rom_init
-    soc = ColorLightSoC(platform, **kwargs)
+    soc = ColorLightSoC(platform, sys_clk_freq=args.sys_clk_freq, **kwargs)
 
     # Builder
     # Se firmware customizado, não compilar software (BIOS) do LiteX
@@ -185,7 +278,7 @@ def main():
         bitstream = os.path.join(gw_dir, "colorlight_soc.bit")
         if os.path.exists(bitstream):
             print(f"\nGravando {bitstream} na FPGA...")
-            os.system(f"openFPGALoader --board colorlight-i5 {bitstream}")
+            os.system(f"openFPGALoader --board {OPENFPGALOADER_BOARD[args.board]} {bitstream}")
         else:
             print(f"\nERRO: Bitstream não encontrado: {bitstream}")
             print("Execute com --build primeiro.")

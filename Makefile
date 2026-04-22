@@ -22,25 +22,29 @@
 
 BUILD_DIR    := build
 BOARD        ?= i5
+SYS_CLK_FREQ ?= 25e6
 SERIAL_PORT  ?= /dev/ttyACM0
 SERIAL_BAUD  ?= 115200
 
-.PHONY: all embed gateware firmware flash load terminal clean verilog
+.PHONY: all embed gateware firmware flash flash-persistent load terminal clean verilog
 
 all: gateware firmware
 
 # ---------- Gateware (SoC → Verilog → Netlist → Bitstream + BIOS) ----------
 
 gateware:
-	python3 soc.py --board $(BOARD) --build --output-dir $(BUILD_DIR)
+	python3 soc.py --board $(BOARD) --sys-clk-freq $(SYS_CLK_FREQ) --build --output-dir $(BUILD_DIR)
 
 verilog:
-	python3 soc.py --board $(BOARD) --output-dir $(BUILD_DIR)
+	python3 soc.py --board $(BOARD) --sys-clk-freq $(SYS_CLK_FREQ) --output-dir $(BUILD_DIR)
+
+prepare-firmware:
+	python3 soc.py --board $(BOARD) --sys-clk-freq $(SYS_CLK_FREQ) --build --output-dir $(BUILD_DIR)
 
 # ---------- Firmware customizado (C → ELF → BIN) ----------
 # Requer gateware primeiro (gera headers + libs)
 
-firmware:
+firmware: prepare-firmware
 	$(MAKE) -C firmware BUILD_DIR=../$(BUILD_DIR)
 
 # ---------- Firmware embutido na ROM ----------
@@ -50,7 +54,7 @@ firmware:
 
 embed: firmware
 	@echo "Reconstruindo gateware com firmware customizado na ROM..."
-	python3 soc.py --board $(BOARD) --build --firmware firmware/firmware.bin --output-dir $(BUILD_DIR)
+	python3 soc.py --board $(BOARD) --sys-clk-freq $(SYS_CLK_FREQ) --build --firmware firmware/firmware.bin --output-dir $(BUILD_DIR)
 	@echo "Bitstream com firmware embutido pronto em $(BUILD_DIR)/gateware/colorlight_soc.bit"
 
 # ---------- Gravar na FPGA ----------
@@ -64,6 +68,9 @@ OPENOCD_SCRIPTS ?= /opt/oss-cad-suite/share/openocd/scripts
 JTAG_ID_i5      := 0x41111043
 JTAG_ID_i9      := 0x41112043
 JTAG_ID         := $(JTAG_ID_$(BOARD))
+OPENFPGALOADER_BOARD_i5 := colorlight-i5
+OPENFPGALOADER_BOARD_i9 := colorlight-i9
+OPENFPGALOADER_BOARD    := $(OPENFPGALOADER_BOARD_$(BOARD))
 
 OPENOCD_BASE    := openocd -s $(OPENOCD_SCRIPTS) \
 	-f interface/cmsis-dap.cfg \
@@ -77,7 +84,10 @@ flash-detect:
 	$(OPENOCD_BASE) -c "init; scan_chain; exit"
 
 flash-openFPGALoader:
-	openFPGALoader --board colorlight-i5 $(BUILD_DIR)/gateware/colorlight_soc.bit
+	openFPGALoader --board $(OPENFPGALOADER_BOARD) $(BUILD_DIR)/gateware/colorlight_soc.bit
+
+flash-persistent:
+	openFPGALoader --board $(OPENFPGALOADER_BOARD) --write-flash --verify --reset $(BUILD_DIR)/gateware/colorlight_soc.bit
 
 # ---------- Carregar firmware via serial ----------
 

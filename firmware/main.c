@@ -15,29 +15,31 @@
 #include <libbase/uart.h>
 #include <libbase/console.h>
 #include <generated/csr.h>
+#include <generated/soc.h>
 
 /* ========================================================================= */
 /* ASCII Art                                                                  */
 /* ========================================================================= */
 static const char *ascii_art[] = {
     "",
-    "  ======================================================",
-    "  ||                                                  ||",
-    "  ||   ____  ___ ____   ____     __     __  _         ||",
-    "  ||  |  _ \\|_ _/ ___| / ___|    \\ \\   / /         ||",
-    "  ||  | |_) || |\\___ \\| |   _____\\ \\ / /          ||",
-    "  ||  |  _ < | | ___) | |__|_____|\\   /              ||",
-    "  ||  |_| \\_\\___|____/ \\____|      \\_/            ||",
-    "  ||                                                  ||",
-    "  ||    Laboratorio de Desenvolvimento de Software    ||",
-    "  ||                  Equipe RISC-V                   ||",
-    "  ||                  IFCE -- iREDE                   ||",
-    "  ||                                                  ||",
-    "  ||  SoC: LiteX + VexRiscv (RV32IM)                  ||",
-    "  ||  FPGA: ColorLight i5 (Lattice ECP5 LFE5U-25F)    ||",
-    "  ||  Clock: 25 MHz | UART: 115200 bps                ||",
-    "  ||                                                  ||",
-    "  ======================================================",
+    "  ==================================================================",
+    "  ||                                                              ||",
+    "  ||  ░▒▓███████▓▒░░▒▓█▓▒░░▒▓███████▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░ ||",
+    "  ||  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ||",
+    "  ||  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░       ░▒▓█▓▒▒▓█▓▒░  ||",
+    "  ||  ░▒▓███████▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░       ░▒▓█▓▒▒▓█▓▒░  ||",
+    "  ||  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░        ░▒▓█▓▓█▓▒░   ||",
+    "  ||  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▓█▓▒░   ||",
+    "  ||  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░   ░▒▓██▓▒░    ||",
+    "  ||                                                              ||",
+    "  ||    Laboratorio de Desenvolvimento de Software                ||",
+    "  ||                  Equipe RISC-V                               ||",
+    "  ||                  IFCE -- iREDE                               ||",
+    "  ||                                                              ||",
+    "  ||  SoC: LiteX + VexRiscv (RV32IM)                              ||",
+    "  ||  FPGA: ColorLight i5 (Lattice ECP5 LFE5U-25F)                ||",
+    "  ||                                                              ||",
+    "  ==================================================================",
     "",
     NULL,
 };
@@ -46,12 +48,103 @@ static const char *ascii_art[] = {
 /* Funções auxiliares                                                         */
 /* ========================================================================= */
 
+static void print_packed_text_word(unsigned int word);
+
+static unsigned long get_build_clock_hz(void)
+{
+#ifdef CSR_BUILD_INFO_BASE
+    return (unsigned long)build_info_clock_hz_read();
+#else
+    return (unsigned long)CONFIG_CLOCK_FREQUENCY;
+#endif
+}
+
 static void print_banner(void)
 {
     const char **line = ascii_art;
     while (*line) {
         printf("%s\n", *line);
         line++;
+    }
+    printf("  Clock: %lu MHz | UART: 115200 bps\n", get_build_clock_hz() / 1000000);
+#ifdef CSR_BUILD_INFO_BASE
+    printf("  Build mode: ");
+    print_packed_text_word(build_info_mode_read());
+    printf(" | Build date: ");
+    print_packed_text_word(build_info_date0_read());
+    print_packed_text_word(build_info_date1_read());
+    print_packed_text_word(build_info_date2_read());
+    print_packed_text_word(build_info_date3_read());
+    print_packed_text_word(build_info_date4_read());
+    printf("\n");
+#endif
+    printf("\n");
+}
+
+static void print_packed_text_word(unsigned int word)
+{
+    int i;
+    for (i = 0; i < 4; i++) {
+        char c = (char)((word >> (8 * i)) & 0xff);
+        if (c == '\0') {
+            break;
+        }
+        printf("%c", c);
+    }
+}
+
+static void print_build_info(void)
+{
+#ifdef CSR_BUILD_INFO_BASE
+    printf("Build clock: %lu Hz\n", get_build_clock_hz());
+    printf("Build mode: ");
+    print_packed_text_word(build_info_mode_read());
+    printf("\n");
+    printf("Build org: ");
+    print_packed_text_word(build_info_org0_read());
+    print_packed_text_word(build_info_org1_read());
+    print_packed_text_word(build_info_org2_read());
+    print_packed_text_word(build_info_org3_read());
+    printf("\n");
+    printf("Build date: ");
+    print_packed_text_word(build_info_date0_read());
+    print_packed_text_word(build_info_date1_read());
+    print_packed_text_word(build_info_date2_read());
+    print_packed_text_word(build_info_date3_read());
+    print_packed_text_word(build_info_date4_read());
+    printf("\n");
+#endif
+}
+
+static int uart_char_available(void)
+{
+#ifdef CSR_UART_RXEMPTY_ADDR
+    return uart_rxempty_read() == 0;
+#else
+    return 1;
+#endif
+}
+
+static char uart_read_char_nowait(void)
+{
+    return (char)uart_rxtx_read();
+}
+
+static void wait_for_serial_banner_trigger(void)
+{
+    char c;
+
+    while (!uart_char_available()) {
+    }
+
+    c = uart_read_char_nowait();
+    if (c != '\r' && c != '\n') {
+        while (uart_char_available()) {
+            c = uart_read_char_nowait();
+            if (c == '\r' || c == '\n') {
+                break;
+            }
+        }
     }
 }
 
@@ -110,10 +203,11 @@ static void prompt_loop(void)
             print_banner();
         } else if (strcmp(buf, "info") == 0) {
             printf("CPU:   VexRiscv RV32IM (standard)\n");
-            printf("Clock: %d MHz\n", CONFIG_CLOCK_FREQUENCY / 1000000);
+            printf("Clock: %lu MHz\n", get_build_clock_hz() / 1000000);
             printf("ROM:   32 KiB\n");
             printf("SRAM:  8 KiB\n");
             printf("UART:  115200 bps\n");
+            print_build_info();
         } else if (strcmp(buf, "led") == 0) {
             led_toggle();
             printf("LED alternado.\n");
@@ -139,6 +233,8 @@ int main(void)
 #endif
 
     uart_init();
+
+    wait_for_serial_banner_trigger();
 
     printf("\n\n");
     print_banner();

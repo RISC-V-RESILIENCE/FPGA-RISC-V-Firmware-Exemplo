@@ -9,8 +9,8 @@
 
 BUILD_DIR ?= ../build
 
-include $(BUILD_DIR)/software/include/generated/variables.mak
-include $(SOC_DIRECTORY)/software/common.mak
+-include $(BUILD_DIR)/software/include/generated/variables.mak
+-include $(SOC_DIRECTORY)/software/common.mak
 
 # Diretório de software (absoluto, derivado de BUILDINC_DIRECTORY)
 SW_ABS := $(abspath $(BUILDINC_DIRECTORY)/..)
