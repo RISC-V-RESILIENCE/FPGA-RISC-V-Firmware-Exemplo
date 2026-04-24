@@ -1,2 +1,4 @@
 build*
 tmp.txt
+venv
+__pycache__

@@ -1,0 +1,4 @@
+2026-04-22 22:46:57,197 - TensorFlow_GUI_Simple - setup_device:63 - INFO - 🔍 Configurando dispositivo de computação...
+2026-04-22 22:46:59,380 - TensorFlow_GUI_Simple - setup_device:79 - INFO - 🔧 TensorFlow compilado com suporte CUDA, mas sem GPU disponível
+2026-04-22 22:46:59,387 - TensorFlow_GUI_Simple - setup_device:83 - INFO - 🔧 Política de dispositivo CUDA definida
+2026-04-22 22:46:59,417 - TensorFlow_GUI_Simple - <module>:99 - INFO - ✅ Biblioteca tinymlgen importada com sucesso

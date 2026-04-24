@@ -1,0 +1,4 @@
+tensorflow
+numpy
+PyQt6
+matplotlib

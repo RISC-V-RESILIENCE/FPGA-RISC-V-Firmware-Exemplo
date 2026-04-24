@@ -1,0 +1,106 @@
+# Diagrama da Arquitetura da Rede Neural
+
+## Topologia Geral
+```
+Input (1,1)
+    ↓
+Dense Layer 1 (1 → 16)
+    ↓
+ReLU Activation
+    ↓
+Dense Layer 2 (16 → 16)  
+    ↓
+ReLU Activation
+    ↓
+Dense Layer 3 (16 → 1)
+    ↓
+Output (1,1)
+```
+
+## Detalhamento das Camadas
+
+### 1. Camada de Entrada
+- **Nome**: serving_default_keras_tensor:0
+- **Shape**: [1, 1]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0245, zero_point=-128
+
+### 2. Primeira Camada Dense
+- **Operação**: Matrix Multiplication
+- **Nome**: sequential_1/dense_2_1/MatMul
+- **Shape**: [1, 16]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0126, zero_point=0
+- **Função**: Expande entrada de 1 para 16 neurônios
+
+### 3. Bias Addition 1
+- **Nome**: sequential_1/dense_2_1/Add
+- **Shape**: [1]
+- **Tipo**: int32
+- **Quantização**: scale=9.95e-05, zero_point=0
+
+### 4. ReLU Activation 1
+- **Nome**: sequential_1/dense_1/Relu;sequential_1/dense_1/BiasAdd
+- **Shape**: [1, 16]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0113, zero_point=-128
+
+### 5. Segunda Camada Dense
+- **Operação**: Matrix Multiplication
+- **Nome**: sequential_1/dense_1_2/MatMul
+- **Shape**: [16, 16]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0, zero_point=0
+- **Função**: Processamento intermediário (16 → 16)
+
+### 6. Bias Addition 2
+- **Nome**: sequential_1/dense_1_2/Relu;sequential_1/dense_1_2/BiasAdd
+- **Shape**: [16]
+- **Tipo**: int32
+- **Quantização**: scale=0.0, zero_point=0
+
+### 7. ReLU Activation 2
+- **Nome**: sequential_1/dense_1_2/MatMul;sequential_1/dense_1_2/Relu;sequential_1/dense_1_2/BiasAdd
+- **Shape**: [1, 16]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.00788, zero_point=-128
+
+### 8. Terceira Camada Dense (Saída)
+- **Operação**: Matrix Multiplication
+- **Nome**: sequential_1/dense_1/MatMul
+- **Shape**: [16, 1]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0, zero_point=0
+- **Função**: Reduz de 16 para 1 neurônio
+
+### 9. Bias Addition 3
+- **Nome**: sequential_1/dense_1/Relu;sequential_1/dense_1/BiasAdd
+- **Shape**: [16]
+- **Tipo**: int32
+- **Quantização**: scale=0.0, zero_point=0
+
+### 10. Camada de Saída
+- **Nome**: StatefulPartitionedCall_1:0
+- **Shape**: [1, 1]
+- **Tipo**: int8 (quantizado)
+- **Quantização**: scale=0.0082, zero_point=3
+
+## Resumo da Arquitetura
+
+- **Tipo de Rede**: Feedforward Neural Network (MLP)
+- **Total de Camadas**: 10 (incluindo bias e ativações)
+- **Camadas Dense**: 3
+- **Ativações**: 2 ReLU
+- **Parâmetros**: Weights e biases para cada camada Dense
+- **Entrada**: 1 valor escalar
+- **Saída**: 1 valor escalar
+- **Quantização**: 8-bit integer em todas as camadas
+
+## Fluxo de Dados
+1. Entrada escalar (1 valor)
+2. Expansão para 16 neurônios (Dense + ReLU)
+3. Processamento intermediário (Dense 16x16 + ReLU)
+4. Redução para saída escalar (Dense 16x1)
+5. Saída quantizada em 8-bit
+
+Esta é uma rede neural simples do tipo MLP (Multi-Layer Perceptron) com 3 camadas densas e ativações ReLU, projetada para processamento de dados escalares.

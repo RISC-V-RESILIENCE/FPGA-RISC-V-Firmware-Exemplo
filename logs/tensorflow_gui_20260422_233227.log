@@ -1,0 +1,106 @@
+2026-04-22 23:32:27,168 - __main__ - setup_device:63 - INFO - 🔍 Configurando dispositivo de computação...
+2026-04-22 23:32:28,004 - __main__ - setup_device:79 - INFO - 🔧 TensorFlow compilado com suporte CUDA, mas sem GPU disponível
+2026-04-22 23:32:28,004 - __main__ - setup_device:83 - INFO - 🔧 Política de dispositivo CUDA definida
+2026-04-22 23:32:28,006 - __main__ - <module>:99 - INFO - ✅ Biblioteca tinymlgen importada com sucesso
+2026-04-22 23:32:28,416 - __main__ - __init__:1132 - INFO - 🚀 Inicializando aplicação TensorFlow GUI
+2026-04-22 23:32:28,418 - __main__ - initUI:1205 - INFO - 🎨 Configurando interface do usuário
+2026-04-22 23:32:29,105 - __main__ - refresh_serial_ports:4479 - INFO - 📡 Encontradas 34 portas seriais
+2026-04-22 23:32:29,459 - __main__ - update_status:2036 - INFO - 📊 Status: Pronto para uso
+2026-04-22 23:32:29,459 - __main__ - create_plots:1701 - INFO - 📊 Criando canvases para gráficos com boxes individuais
+2026-04-22 23:32:30,882 - __main__ - update_status:2036 - INFO - 📊 Status: Gerando dados...
+2026-04-22 23:32:30,882 - __main__ - generate_data:1789 - INFO - 🎲 Gerando 10000 amostras com fórmula senoide e seed 1337
+2026-04-22 23:32:30,974 - __main__ - generate_data:1817 - INFO - ✅ Dados gerados: Treino=6000, Validação=2000, Teste=2000
+2026-04-22 23:32:32,361 - __main__ - update_status:2036 - INFO - 📊 Status: Dados gerados: 10000 amostras (senoide)
+2026-04-22 23:35:22,265 - __main__ - update_quantization_for_mcu:1879 - INFO - SoC RISC-V detectado - Quantização padrão definida para Int8 (8-bit)
+2026-04-22 23:35:30,968 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 590
+2026-04-22 23:35:31,659 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 580
+2026-04-22 23:35:31,993 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 570
+2026-04-22 23:35:32,469 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 560
+2026-04-22 23:35:32,518 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 550
+2026-04-22 23:35:32,564 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 540
+2026-04-22 23:35:32,612 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 530
+2026-04-22 23:35:32,661 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 520
+2026-04-22 23:35:32,709 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 510
+2026-04-22 23:35:32,757 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 500
+2026-04-22 23:35:32,808 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 490
+2026-04-22 23:35:32,883 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 480
+2026-04-22 23:35:32,929 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 470
+2026-04-22 23:35:32,985 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 460
+2026-04-22 23:35:33,026 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 450
+2026-04-22 23:35:33,070 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 440
+2026-04-22 23:35:33,108 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 430
+2026-04-22 23:35:33,148 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 420
+2026-04-22 23:35:33,209 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 410
+2026-04-22 23:35:33,247 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 400
+2026-04-22 23:35:33,296 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 390
+2026-04-22 23:35:33,346 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 380
+2026-04-22 23:35:33,398 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 370
+2026-04-22 23:35:33,447 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 360
+2026-04-22 23:35:33,498 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 350
+2026-04-22 23:35:33,548 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 340
+2026-04-22 23:35:33,623 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 330
+2026-04-22 23:35:33,680 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 320
+2026-04-22 23:35:33,697 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 310
+2026-04-22 23:35:33,746 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 300
+2026-04-22 23:35:33,795 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 290
+2026-04-22 23:35:33,850 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 280
+2026-04-22 23:35:33,900 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 270
+2026-04-22 23:35:33,946 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 260
+2026-04-22 23:35:33,998 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 233
+2026-04-22 23:35:35,341 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 226
+2026-04-22 23:35:35,386 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 219
+2026-04-22 23:35:35,436 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 212
+2026-04-22 23:35:35,454 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 205
+2026-04-22 23:35:35,488 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 191
+2026-04-22 23:35:35,535 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 142
+2026-04-22 23:35:35,599 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 108
+2026-04-22 23:35:36,041 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 115
+2026-04-22 23:35:36,124 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 122
+2026-04-22 23:35:36,162 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 129
+2026-04-22 23:35:38,381 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 135
+2026-04-22 23:35:38,430 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 142
+2026-04-22 23:35:38,476 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 149
+2026-04-22 23:35:38,584 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 156
+2026-04-22 23:35:38,626 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 163
+2026-04-22 23:35:40,640 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 170
+2026-04-22 23:35:40,690 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 177
+2026-04-22 23:35:40,769 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 184
+2026-04-22 23:35:40,836 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 191
+2026-04-22 23:35:40,872 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 198
+2026-04-22 23:35:42,390 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 205
+2026-04-22 23:35:42,640 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 212
+2026-04-22 23:35:43,262 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 205
+2026-04-22 23:35:43,298 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 198
+2026-04-22 23:35:43,322 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 191
+2026-04-22 23:35:45,052 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 198
+2026-04-22 23:35:45,252 - __main__ - update_epochs:1853 - INFO - 🔄 Épocas atualizado para: 205
+2026-04-22 23:35:59,605 - __main__ - train_model:2106 - INFO - 🔧 Dispositivo de treinamento: CUDA
+2026-04-22 23:35:59,608 - __main__ - update_status:2036 - INFO - 📊 Status: Treinando com CUDA...
+2026-04-22 23:35:59,608 - __main__ - train_model:2110 - INFO - ⏳ Criando janela modal de treinamento
+2026-04-22 23:35:59,969 - __main__ - train_model:2113 - INFO - ⏳ Janela modal de treinamento exibida
+2026-04-22 23:35:59,976 - __main__ - train_model:2115 - INFO - 🚀 Iniciando treinamento com 205 épocas e batch_size=16 usando CUDA
+2026-04-22 23:36:02,313 - __main__ - train_model:2175 - INFO - ✅ Informações do modelo processadas e exibidas
+2026-04-22 23:55:03,017 - __main__ - train_model:2218 - INFO - ✅ Treinamento concluído
+2026-04-22 23:55:03,059 - __main__ - train_model:2223 - INFO - ⏳ Fechando janela modal de treinamento (concluído)
+2026-04-22 23:55:03,312 - __main__ - train_model:2225 - INFO - ⏳ Janela modal de treinamento fechada
+2026-04-22 23:55:05,858 - __main__ - update_status:2036 - INFO - 📊 Status: Treinamento concluído
+2026-04-23 00:04:29,848 - __main__ - update_status:2036 - INFO - 📊 Status: Exportando modelo completo
+2026-04-23 00:04:29,868 - __main__ - export_model:2480 - INFO - 💾 Iniciando Exportando modelo completo para SoC LiteX+VexRiscv com quantização Int8 (8-bit)
+2026-04-23 00:04:29,868 - __main__ - export_model:2511 - INFO - 🔧 Criando TFLiteConverter...
+2026-04-23 00:04:29,893 - __main__ - export_model:2513 - INFO - ✅ Converter criado: <class 'tensorflow.lite.python.lite.TFLiteKerasModelConverterV2'>
+2026-04-23 00:04:29,895 - __main__ - export_model:2527 - INFO - 🔬 Aplicando quantização Int8
+2026-04-23 00:04:29,903 - __main__ - export_model:2545 - INFO - 🔧 Configurações finais - optimizations: [<Optimize.DEFAULT: 'DEFAULT'>]
+2026-04-23 00:04:29,908 - __main__ - export_model:2546 - INFO - 🔧 Configurações finais - target_spec.supported_ops: [<OpsSet.TFLITE_BUILTINS: 'TFLITE_BUILTINS'>]
+2026-04-23 00:04:29,913 - __main__ - export_model:2548 - INFO - 🔧 Configurações finais - representative_dataset: configurado
+2026-04-23 00:04:29,924 - __main__ - export_model:2550 - INFO - 🔧 Configurações finais - target_spec.supported_types: [tf.int8]
+2026-04-23 00:04:35,554 - tensorflow - copy_assets_to_destination_dir:838 - INFO - Assets written to: /tmp/tmp5pdfqqy3/assets
+2026-04-23 00:04:37,402 - __main__ - export_model:2593 - INFO - ✅ Modelo convertido com sucesso
+2026-04-23 00:04:37,403 - __main__ - export_model:2599 - INFO - 💾 Salvando modelo em: /home/carlosdelfino/workspace/pesquisas/Pos-Graduacao/Mestrado/docker/projeto-riscv-lds-memory-tf/tflite_model_soc_litex+vexriscv_int8_8_bit_20260423_000429/model_int8.tflite
+2026-04-23 00:04:37,404 - __main__ - export_model:2602 - INFO - ✅ Modelo salvo: /home/carlosdelfino/workspace/pesquisas/Pos-Graduacao/Mestrado/docker/projeto-riscv-lds-memory-tf/tflite_model_soc_litex+vexriscv_int8_8_bit_20260423_000429/model_int8.tflite (3464 bytes)
+2026-04-23 00:04:37,406 - __main__ - generate_model_header:2641 - INFO - 🔧 Gerando header .h para quantização Int8 (8-bit)
+2026-04-23 00:04:37,407 - __main__ - generate_model_header:2670 - INFO - 📖 Lendo modelo de: /home/carlosdelfino/workspace/pesquisas/Pos-Graduacao/Mestrado/docker/projeto-riscv-lds-memory-tf/tflite_model_soc_litex+vexriscv_int8_8_bit_20260423_000429/model_int8.tflite
+2026-04-23 00:04:37,420 - __main__ - generate_model_header:2713 - INFO - 💾 Salvando header em: /home/carlosdelfino/workspace/pesquisas/Pos-Graduacao/Mestrado/docker/projeto-riscv-lds-memory-tf/tflite_model_soc_litex+vexriscv_int8_8_bit_20260423_000429/model_data.h
+2026-04-23 00:04:37,420 - __main__ - generate_model_header:2717 - INFO - ✅ Header gerado: /home/carlosdelfino/workspace/pesquisas/Pos-Graduacao/Mestrado/docker/projeto-riscv-lds-memory-tf/tflite_model_soc_litex+vexriscv_int8_8_bit_20260423_000429/model_data.h (3464 bytes)
+2026-04-23 00:04:37,425 - __main__ - generate_soc_vexriscv_code:3726 - INFO - SoC RISC-V Gerando código SoC LiteX+VexRiscv com quantização Int8 (8-bit)...
+2026-04-23 00:04:37,434 - __main__ - export_model:2636 - ERROR - ❌ Erro na exportação: name 'g_model_ctx' is not defined
+2026-04-23 00:04:37,435 - __main__ - update_status:2036 - INFO - 📊 Status: Erro na exportação: name 'g_model_ctx' is not defined

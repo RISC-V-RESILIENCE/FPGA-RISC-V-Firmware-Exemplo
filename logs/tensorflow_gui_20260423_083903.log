@@ -1,0 +1,121 @@
+2026-04-23 08:39:03,465 - __main__ - setup_device:63 - INFO - 🔍 Configurando dispositivo de computação...
+2026-04-23 08:39:04,407 - __main__ - setup_device:79 - INFO - 🔧 TensorFlow compilado com suporte CUDA, mas sem GPU disponível
+2026-04-23 08:39:04,408 - __main__ - setup_device:83 - INFO - 🔧 Política de dispositivo CUDA definida
+2026-04-23 08:39:04,411 - __main__ - <module>:99 - INFO - ✅ Biblioteca tinymlgen importada com sucesso
+2026-04-23 08:39:04,756 - __main__ - __init__:1147 - INFO - 🚀 Inicializando aplicação TensorFlow GUI
+2026-04-23 08:39:04,758 - __main__ - initUI:1220 - INFO - 🎨 Configurando interface do usuário
+2026-04-23 08:39:05,364 - __main__ - refresh_serial_ports:4624 - INFO - 📡 Encontradas 34 portas seriais
+2026-04-23 08:39:05,695 - __main__ - update_status:2069 - INFO - 📊 Status: Pronto para uso
+2026-04-23 08:39:05,696 - __main__ - create_plots:1734 - INFO - 📊 Criando canvases para gráficos com boxes individuais
+2026-04-23 08:39:06,594 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:39:06,594 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 10000 amostras com fórmula senoide e seed 1337
+2026-04-23 08:39:06,717 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=6000, Validação=2000, Teste=2000
+2026-04-23 08:39:08,560 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 10000 amostras (senoide)
+2026-04-23 08:43:18,784 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 590
+2026-04-23 08:43:19,201 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 580
+2026-04-23 08:43:19,729 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 570
+2026-04-23 08:43:19,782 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 560
+2026-04-23 08:43:19,833 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 550
+2026-04-23 08:43:19,886 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 540
+2026-04-23 08:43:19,937 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 530
+2026-04-23 08:43:19,989 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 520
+2026-04-23 08:43:20,042 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 510
+2026-04-23 08:43:20,094 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 500
+2026-04-23 08:43:20,145 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 490
+2026-04-23 08:43:20,196 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 480
+2026-04-23 08:43:20,245 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 470
+2026-04-23 08:43:20,295 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 460
+2026-04-23 08:43:20,347 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 450
+2026-04-23 08:43:20,396 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 440
+2026-04-23 08:43:20,445 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 430
+2026-04-23 08:43:20,496 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 420
+2026-04-23 08:43:20,545 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 410
+2026-04-23 08:43:20,596 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 400
+2026-04-23 08:43:20,648 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 390
+2026-04-23 08:43:20,695 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 380
+2026-04-23 08:43:20,746 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 370
+2026-04-23 08:43:20,796 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 360
+2026-04-23 08:43:20,845 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 350
+2026-04-23 08:43:20,896 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 340
+2026-04-23 08:43:20,945 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 330
+2026-04-23 08:43:20,995 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 320
+2026-04-23 08:43:21,046 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 310
+2026-04-23 08:43:21,100 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 300
+2026-04-23 08:43:21,147 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 290
+2026-04-23 08:43:21,196 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 280
+2026-04-23 08:43:21,246 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 270
+2026-04-23 08:43:21,296 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 260
+2026-04-23 08:43:21,347 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 250
+2026-04-23 08:43:21,395 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 240
+2026-04-23 08:43:21,446 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 230
+2026-04-23 08:43:21,496 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 220
+2026-04-23 08:43:21,547 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 210
+2026-04-23 08:43:21,599 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 200
+2026-04-23 08:43:21,647 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 190
+2026-04-23 08:43:21,696 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 180
+2026-04-23 08:43:21,752 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 170
+2026-04-23 08:43:21,795 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 160
+2026-04-23 08:43:21,846 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 150
+2026-04-23 08:43:21,896 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 140
+2026-04-23 08:43:21,947 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 130
+2026-04-23 08:43:21,996 - __main__ - update_epochs:1886 - INFO - 🔄 Épocas atualizado para: 101
+2026-04-23 08:43:24,338 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 9990
+2026-04-23 08:43:24,349 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:24,350 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 9990 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:24,433 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=5994, Validação=1998, Teste=1998
+2026-04-23 08:43:26,501 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 9990 amostras (senoide)
+2026-04-23 08:43:26,519 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 9980
+2026-04-23 08:43:26,519 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:26,519 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 9980 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:26,533 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=5988, Validação=1996, Teste=1996
+2026-04-23 08:43:28,850 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 9980 amostras (senoide)
+2026-04-23 08:43:28,867 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 9970
+2026-04-23 08:43:28,868 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:28,868 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 9970 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:28,873 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=5982, Validação=1994, Teste=1994
+2026-04-23 08:43:30,807 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 9970 amostras (senoide)
+2026-04-23 08:43:30,830 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 9960
+2026-04-23 08:43:30,834 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:30,836 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 9960 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:30,844 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=5976, Validação=1992, Teste=1992
+2026-04-23 08:43:33,252 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 9960 amostras (senoide)
+2026-04-23 08:43:33,294 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 3415
+2026-04-23 08:43:33,294 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:33,294 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 3415 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:33,309 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=2049, Validação=683, Teste=683
+2026-04-23 08:43:36,540 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 3415 amostras (senoide)
+2026-04-23 08:43:36,556 - __main__ - update_samples:1879 - INFO - 🔄 Samples atualizado para: 2725
+2026-04-23 08:43:36,556 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:43:36,556 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 2725 amostras com fórmula senoide e seed 1337
+2026-04-23 08:43:36,558 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=1635, Validação=545, Teste=545
+2026-04-23 08:43:39,056 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 2725 amostras (senoide)
+2026-04-23 08:43:45,913 - __main__ - train_model:2139 - INFO - 🔧 Dispositivo de treinamento: CUDA
+2026-04-23 08:43:45,915 - __main__ - update_status:2069 - INFO - 📊 Status: Treinando com CUDA...
+2026-04-23 08:43:45,916 - __main__ - train_model:2143 - INFO - ⏳ Criando janela modal de treinamento
+2026-04-23 08:43:46,230 - __main__ - train_model:2146 - INFO - ⏳ Janela modal de treinamento exibida
+2026-04-23 08:43:46,232 - __main__ - train_model:2148 - INFO - 🚀 Iniciando treinamento com 101 épocas e batch_size=16 usando CUDA
+2026-04-23 08:43:48,038 - __main__ - train_model:2208 - INFO - ✅ Informações do modelo processadas e exibidas
+2026-04-23 08:45:43,661 - __main__ - train_model:2251 - INFO - ✅ Treinamento concluído
+2026-04-23 08:45:43,663 - __main__ - train_model:2256 - INFO - ⏳ Fechando janela modal de treinamento (concluído)
+2026-04-23 08:45:43,674 - __main__ - train_model:2258 - INFO - ⏳ Janela modal de treinamento fechada
+2026-04-23 08:45:47,678 - __main__ - update_status:2069 - INFO - 📊 Status: Treinamento concluído
+2026-04-23 08:46:03,750 - __main__ - update_status:2069 - INFO - 📊 Status: Gerando dados...
+2026-04-23 08:46:03,755 - __main__ - generate_data:1822 - INFO - 🎲 Gerando 2725 amostras com fórmula senoide e seed 1337
+2026-04-23 08:46:03,778 - __main__ - generate_data:1850 - INFO - ✅ Dados gerados: Treino=1635, Validação=545, Teste=545
+2026-04-23 08:46:05,448 - __main__ - update_status:2069 - INFO - 📊 Status: Dados gerados: 2725 amostras (senoide)
+2026-04-23 08:46:13,972 - __main__ - update_status:2069 - INFO - 📊 Status: Fazendo predições (ruído: branco)...
+2026-04-23 08:46:13,974 - __main__ - make_predictions:2413 - INFO - 🔮 Fazendo predições | noise_type=branco | noise_factor=0.100
+2026-04-23 08:46:14,802 - __main__ - make_predictions:2440 - INFO - ✅ Predições concluídas com ruído 'branco'
+2026-04-23 08:46:14,803 - __main__ - update_status:2069 - INFO - 📊 Status: Predições concluídas (ruído: branco)
+2026-04-23 08:46:26,056 - __main__ - update_status:2069 - INFO - 📊 Status: Fazendo predições (ruído: brownian)...
+2026-04-23 08:46:26,057 - __main__ - make_predictions:2413 - INFO - 🔮 Fazendo predições | noise_type=brownian | noise_factor=0.100
+2026-04-23 08:46:26,516 - __main__ - make_predictions:2440 - INFO - ✅ Predições concluídas com ruído 'brownian'
+2026-04-23 08:46:26,517 - __main__ - update_status:2069 - INFO - 📊 Status: Predições concluídas (ruído: brownian)
+2026-04-23 08:46:36,364 - __main__ - update_status:2069 - INFO - 📊 Status: Fazendo predições (ruído: azul)...
+2026-04-23 08:46:36,364 - __main__ - make_predictions:2413 - INFO - 🔮 Fazendo predições | noise_type=azul | noise_factor=0.100
+2026-04-23 08:46:36,814 - __main__ - make_predictions:2440 - INFO - ✅ Predições concluídas com ruído 'azul'
+2026-04-23 08:46:36,814 - __main__ - update_status:2069 - INFO - 📊 Status: Predições concluídas (ruído: azul)
+2026-04-23 08:46:50,074 - __main__ - update_status:2069 - INFO - 📊 Status: Fazendo predições (ruído: violeta)...
+2026-04-23 08:46:50,074 - __main__ - make_predictions:2413 - INFO - 🔮 Fazendo predições | noise_type=violeta | noise_factor=0.100
+2026-04-23 08:46:50,571 - __main__ - make_predictions:2440 - INFO - ✅ Predições concluídas com ruído 'violeta'
+2026-04-23 08:46:50,572 - __main__ - update_status:2069 - INFO - 📊 Status: Predições concluídas (ruído: violeta)

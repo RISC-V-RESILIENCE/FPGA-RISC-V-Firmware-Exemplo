@@ -21,8 +21,8 @@
 ##############################################################################
 
 BUILD_DIR    := build
-BOARD        ?= i5
-SYS_CLK_FREQ ?= 25e6
+BOARD        ?= i9
+SYS_CLK_FREQ ?= 65e6
 SERIAL_PORT  ?= /dev/ttyACM0
 SERIAL_BAUD  ?= 115200
 
